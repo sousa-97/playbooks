@@ -1,0 +1,18 @@
+---
+- name: Atualizar Windows Servers
+  hosts: all
+  gather_facts: yes
+  tasks:
+    - name: Instalar todas as atualizações críticas e de segurança
+      ansible.windows.win_updates:
+        category_names:
+          - SecurityUpdates
+          - CriticalUpdates
+          - UpdateRollups
+        state: installed
+        reboot: yes  # reinicia se necessário
+      register: update_result
+
+    - name: Mostrar atualizações instaladas
+      ansible.builtin.debug:
+        msg: "{{ update_result.updates }}"
